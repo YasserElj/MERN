@@ -78,16 +78,36 @@ school-blog/
    - Click "Create Cluster" (takes a few minutes to provision)
 
 3. **Set Up Database Access**
-   - Create a database user with password authentication
-   - Give this user read/write permissions
+   - In the left sidebar, click "Database Access"
+   - Click "Add New Database User"
+   - Set Authentication Method to "Password"
+   - Enter a simple username (e.g., "schoolblog")
+   - Create a password (avoid special characters)
+   - Set User Privileges to "Read and write to any database"
+   - Click "Add User"
 
 4. **Configure Network Access**
-   - Allow access from your IP address or from anywhere (0.0.0.0/0) for development
+   - In the sidebar, click "Network Access"
+   - Click "Add IP Address"
+   - For development, choose "Allow Access from Anywhere" (0.0.0.0/0)
+   - Click "Confirm"
 
 5. **Get Your Connection String**
+   - Go back to "Database" in sidebar
    - Click "Connect" on your cluster
    - Select "Connect your application"
-   - Copy the connection string
+   - Copy the connection string (looks like: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority`)
+   - Replace `<username>` and `<password>` with the user credentials you created
+
+6. **Update Your .env File**
+   - Create or edit server/.env file:
+   ```
+   MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/school-blog?retryWrites=true&w=majority
+   JWT_SECRET=your_jwt_secret_key
+   PORT=5000
+   ```
+   - Make sure to add the database name (`school-blog`) after the hostname and before the parameters
+   - Generate a JWT secret with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 
 ### Installation
 
@@ -98,16 +118,7 @@ school-blog/
    npm install
    ```
 
-3. **Set up environment variables**
-   - Create a `server/.env` file with:
-   ```
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   PORT=5000
-   ```
-   - Generate a JWT secret with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-
-4. **Install both server and client dependencies**
+3. **Install both server and client dependencies**
    ```bash
    npm run install-all
    ```
