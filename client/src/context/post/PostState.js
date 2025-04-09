@@ -11,7 +11,9 @@ import {
   POST_ERROR,
   SET_LOADING,
   SET_CURRENT,
-  CLEAR_CURRENT
+  CLEAR_CURRENT,
+  LIKE_POST,
+  UNLIKE_POST
 } from '../types';
 
 const PostState = props => {
@@ -90,6 +92,40 @@ const PostState = props => {
     }
   };
 
+  // Like post
+  const likePost = async id => {
+    try {
+      const res = await axios.put(`/api/posts/like/${id}`);
+      
+      dispatch({
+        type: LIKE_POST,
+        payload: { id, likes: res.data }
+      });
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err.response.data.msg
+      });
+    }
+  };
+
+  // Unlike post
+  const unlikePost = async id => {
+    try {
+      const res = await axios.put(`/api/posts/unlike/${id}`);
+      
+      dispatch({
+        type: UNLIKE_POST,
+        payload: { id, likes: res.data }
+      });
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err.response.data.msg
+      });
+    }
+  };
+
   // Set current post
   const setCurrent = post => {
     dispatch({ type: SET_CURRENT, payload: post });
@@ -118,7 +154,9 @@ const PostState = props => {
         updatePost,
         deletePost,
         setCurrent,
-        clearCurrent
+        clearCurrent,
+        likePost,
+        unlikePost
       }}
     >
       {props.children}

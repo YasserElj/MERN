@@ -43,6 +43,7 @@ app.get('/api/test', (req, res) => {
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/posts', require('./routes/posts'));
+app.use('/api/comments', require('./routes/comments'));
 
 // Basic route for testing
 app.get('/', (req, res) => {

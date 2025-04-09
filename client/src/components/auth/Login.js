@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
 import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 
@@ -47,46 +46,79 @@ const Login = () => {
   };
 
   return (
-    <Row className="justify-content-md-center mt-5">
-      <Col md={6}>
-        <Card>
-          <Card.Body>
-            <h1 className="text-center mb-4">
-              Account <span className="text-primary">Login</span>
-            </h1>
-            <Form onSubmit={onSubmit}>
-              <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  name="email"
-                  value={email}
-                  onChange={onChange}
-                  required
-                />
-              </Form.Group>
+    <div className="flex items-center justify-center min-h-[80vh]">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <img 
+            src="/ensa.png" 
+            alt="ENSA Logo" 
+            className="h-20 mx-auto"
+          />
+          <h1 className="mt-4 text-3xl font-extrabold text-gray-900">
+            Welcome back
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Please sign in to your account
+          </p>
+        </div>
+        
+        <form className="mt-8 space-y-6" onSubmit={onSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={onChange}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                placeholder="Email"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={onChange}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                placeholder="Password"
+              />
+            </div>
+          </div>
 
-              <Form.Group className="mb-3" controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  name="password"
-                  value={password}
-                  onChange={onChange}
-                  required
-                />
-              </Form.Group>
-
-              <Button variant="primary" type="submit" className="w-100">
-                Login
-              </Button>
-            </Form>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+        
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
+              Register
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 

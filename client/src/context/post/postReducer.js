@@ -7,7 +7,9 @@ import {
   POST_ERROR,
   SET_LOADING,
   SET_CURRENT,
-  CLEAR_CURRENT
+  CLEAR_CURRENT,
+  LIKE_POST,
+  UNLIKE_POST
 } from '../types';
 
 const postReducer = (state, action) => {
@@ -42,6 +44,18 @@ const postReducer = (state, action) => {
       return {
         ...state,
         posts: state.posts.filter(post => post._id !== action.payload),
+        loading: false
+      };
+    case LIKE_POST:
+    case UNLIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id === action.payload.id ? { ...post, likes: action.payload.likes } : post
+        ),
+        current: state.current && state.current._id === action.payload.id 
+          ? { ...state.current, likes: action.payload.likes } 
+          : state.current,
         loading: false
       };
     case SET_CURRENT:

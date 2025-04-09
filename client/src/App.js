@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 
 // Components
 import AppNavbar from './components/layout/Navbar';
 import Alerts from './components/layout/Alerts';
 import Home from './components/pages/Home';
-import About from './components/pages/About';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import CreatePost from './components/posts/CreatePost';
 import PostDetail from './components/posts/PostDetail';
 import NotFound from './components/pages/NotFound';
 
 // Context
 import AuthState from './context/auth/AuthState';
+import authContext from './context/auth/authContext';
 import AlertState from './context/alert/AlertState';
 import PostState from './context/post/PostState';
+import CommentState from './context/comment/CommentState';
 
 // Utils
 import setAuthToken from './utils/setAuthToken';
@@ -26,49 +25,47 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = () => {
-  // Move the logic to a component that can have useEffect
-  return (
-    <AuthState>
-      <PostState>
-        <AlertState>
-          <Router>
-            <AppInitializer />
-            <div className="App">
-              <AppNavbar />
-              <Container className="mt-4">
-                <Alerts />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/posts/new" element={<CreatePost />} />
-                  <Route path="/posts/:id" element={<PostDetail />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Container>
-            </div>
-          </Router>
-        </AlertState>
-      </PostState>
-    </AuthState>
-  );
-};
-
-// Initializer component to load the user on app startup
+// Initialize user on app load
 const AppInitializer = () => {
-  const authContext = React.useContext(require('./context/auth/authContext').default);
-
+  const context = useContext(authContext);
+  
   useEffect(() => {
     if (localStorage.token) {
-      console.log('App initializing: Loading user from token');
-      authContext.loadUser();
+      context.loadUser();
     }
     // eslint-disable-next-line
   }, []);
+  
+  return null;
+};
 
-  return null; // This component doesn't render anything
+const App = () => {
+  return (
+    <AuthState>
+      <PostState>
+        <CommentState>
+          <AlertState>
+            <Router>
+              <AppInitializer />
+              <div className="min-h-screen bg-gray-50">
+                <AppNavbar />
+                <main className="container mx-auto px-4 py-8">
+                  <Alerts />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/posts/:id" element={<PostDetail />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+              </div>
+            </Router>
+          </AlertState>
+        </CommentState>
+      </PostState>
+    </AuthState>
+  );
 };
 
 export default App; 
